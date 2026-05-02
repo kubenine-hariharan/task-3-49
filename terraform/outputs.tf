@@ -10,7 +10,7 @@ output "ecs_service_name" {
 
 output "ecs_service_arn" {
   description = "Full ARN of the ECS service (IAM policy scope)."
-  value       = aws_ecs_service.main.arn
+  value       = "arn:aws:ecs:${var.aws_region}:${data.aws_caller_identity.current.account_id}:service/${aws_ecs_cluster.main.name}/${aws_ecs_service.main.name}"
 }
 
 output "github_actions_role_arn" {

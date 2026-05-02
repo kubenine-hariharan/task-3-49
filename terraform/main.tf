@@ -97,6 +97,7 @@ resource "aws_ecs_task_definition" "app" {
       portMappings = [
         {
           containerPort = 5000
+          hostPort  = 5000
           protocol      = "tcp"
         }
       ]
@@ -118,6 +119,7 @@ resource "aws_ecs_service" "main" {
   task_definition = aws_ecs_task_definition.app.arn
   desired_count   = 1
   launch_type     = "FARGATE"
+  depends_on = [aws_iam_role_policy_attachment.ecs_execution]
 
   network_configuration {
     subnets          = module.vpc.public_subnets

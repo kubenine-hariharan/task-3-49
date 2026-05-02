@@ -11,7 +11,7 @@ resource "aws_iam_openid_connect_provider" "github" {
     "1c58a3a8518e8759bf075b76b750d4f2df264fcd",
   ]
 }
-
+data "aws_caller_identity" "current" {}
 resource "aws_iam_role" "github_actions" {
   name = "task-3-49-github-actions-role"
 
@@ -47,9 +47,9 @@ resource "aws_iam_role_policy" "deploy" {
         Effect = "Allow"
         Action = [
           "ecs:UpdateService",
-          "ecs:DescribeServices",
+          "ecs:DescribeServices"
         ]
-        Resource = aws_ecs_service.main.arn
+        Resource = "arn:aws:ecs:${var.aws_region}:${data.aws_caller_identity.current.account_id}:service/${aws_ecs_cluster.main.name}/${aws_ecs_service.main.name}"
       }
     ]
   })
